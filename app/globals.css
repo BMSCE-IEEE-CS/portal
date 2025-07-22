@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@theme {
+    --animate-grad-xy: gradient-xy 4s ease infinite;
+    --animate-spin-slow: spin-slow 20s linear infinite;
+
+    @keyframes gradient-xy {
+
+        0%,
+        100% {
+            background-position: left center;
+            background-size: 400% 400%;
+        }
+
+
+        50% {
+            background-size: 200% 200%;
+            background-position: right center;
+        }
+    }
+
+    @keyframes spin-slow {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

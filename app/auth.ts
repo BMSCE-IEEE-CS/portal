@@ -6,4 +6,14 @@ import GitHub from "next-auth/providers/github";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub],
   adapter: PrismaAdapter(prisma),
+  callbacks: {
+    async session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id;
+        session.user.role = user.role;
+      }
+
+      return session;
+    },
+  },
 });

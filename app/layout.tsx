@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 
@@ -16,8 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${font.className} antialiased`}>
+    <html className="scroll-smooth" lang="en">
+      <body
+        className={`${font.className} antialiased bg-gradient-to-br from-slate-500 text-white to-slate-900 animate-grad-xy min-h-screen`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
