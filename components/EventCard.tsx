@@ -30,12 +30,13 @@ const EventCard = ({
 }: EventCardProps) => {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md overflow-hidden flex flex-col w-full max-w-md mx-auto">
-      <div className="w-full h-56 relative">
+      <div className="w-full">
         <Image
           src={posterLink}
           alt={`${name} Poster`}
-          fill
-          className="object-cover"
+          width={1000}
+          height={1000}
+          className="w-full h-auto object-contain"
         />
       </div>
 
