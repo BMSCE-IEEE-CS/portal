@@ -10,8 +10,11 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.8",
     "@auth/prisma-adapter": "^2.10.0",
     "@prisma/client": "^6.12.0",
+    "graphql-tag": "^2.12.6",
+    "graphql-yoga": "^5.15.1",
     "next": "15.3.5",
     "next-auth": "^5.0.0-beta.29",
     "react": "^19.0.0",

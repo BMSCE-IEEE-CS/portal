@@ -71,11 +71,10 @@ model Event {
   description  String
   posterLink   String
   brochureLink String?
-  date         DateTime?
-  time         DateTime?
+  dateTime     String?
   venue        String?
-  ieeeFee      String?
-  nonIeeeFee   String?
+  ieeeFee      Int?
+  nonIeeeFee   Int?
   type         EventType[]
   pocsName     String[]
   pocsPhone    String[]
