@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import EventCard from "./EventCard";
 
 const Main = () => {
   const { data: session, status } = useSession();
@@ -47,26 +48,26 @@ const Main = () => {
           >
             Create Event
           </Link>
-          <div className="mt-10">
+          <div className="mt-10 w-full">
             {loading && <p className="mt-4">Fetching events...</p>}
             {error && <p className="text-red-400 mt-4">{error.message}</p>}
             {data?.events && (
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data.events.map((event: Event) => (
-                  <div
+                  <EventCard
                     key={event.id}
-                    className="bg-slate-400 px-4 py-2 rounded-xl"
-                  >
-                    <h1>{event.name}</h1>
-                    <h1>{event.description}</h1>
-                    <h1>{event.posterLink}</h1>
-                    <button
-                      onClick={() => handleDelete(event.id)}
-                      className="bg-red-300 p-2 w-full rounded-xl"
-                    >
-                      Delete
-                    </button>
-                  </div>
+                    name={event.name}
+                    description={event.description}
+                    posterLink={event.posterLink}
+                    brochureLink={event.brochureLink}
+                    dateTime={event?.dateTime}
+                    venue={event?.venue}
+                    ieeeFee={event?.ieeeFee}
+                    nonIeeeFee={event?.nonIeeeFee}
+                    type={event?.type}
+                    pocsName={event.pocsName}
+                    pocsPhone={event.pocsPhone}
+                  />
                 ))}
               </div>
             )}
