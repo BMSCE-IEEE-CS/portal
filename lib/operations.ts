@@ -5,16 +5,40 @@ export const CREATE_EVENT = gql`
     $name: String!
     $description: String!
     $posterLink: String!
+    $brochureLink: String
+    $dateTime: String
+    $venue: String
+    $ieeeFee: Int
+    $nonIeeeFee: Int
+    $type: [EventType]
+    $pocsName: [String!]
+    $pocsPhone: [String!]
   ) {
     createEvent(
       name: $name
       description: $description
       posterLink: $posterLink
+      brochureLink: $brochureLink
+      dateTime: $dateTime
+      venue: $venue
+      ieeeFee: $ieeeFee
+      nonIeeeFee: $nonIeeeFee
+      type: $type
+      pocsName: $pocsName
+      pocsPhone: $pocsPhone
     ) {
       id
       name
       description
       posterLink
+      brochureLink
+      dateTime
+      venue
+      ieeeFee
+      nonIeeeFee
+      type
+      pocsName
+      pocsPhone
       createdAt
     }
   }
