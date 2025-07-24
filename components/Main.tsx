@@ -39,7 +39,7 @@ const Main = () => {
   }
 
   return (
-    <div>
+    <div className="w-full">
       {session?.user.role.includes("ADMIN") ? (
         <div className="flex flex-col items-center justify-center w-full">
           <Link
@@ -52,10 +52,11 @@ const Main = () => {
             {loading && <p className="mt-4">Fetching events...</p>}
             {error && <p className="text-red-400 mt-4">{error.message}</p>}
             {data?.events && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-3 gap-6 mx-auto w-full px-4">
                 {data.events.map((event: Event) => (
                   <EventCard
                     key={event.id}
+                    id={event.id}
                     name={event.name}
                     description={event.description}
                     posterLink={event.posterLink}
