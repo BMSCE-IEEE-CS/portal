@@ -7,13 +7,9 @@ export const typeDefs = gql`
     description: String!
     posterLink: String!
     brochureLink: String
-    dateTime: String
-    venue: String
-    ieeeFee: Int
-    nonIeeeFee: Int
     type: [EventType]
-    pocsName: [String!]
-    pocsPhone: [String!]
+    regLink: String
+    date: String!
     createdAt: String
   }
 
@@ -24,6 +20,8 @@ export const typeDefs = gql`
     COMPETITION
     SOCIAL
     PEER
+    SEMINAR
+    SUMMIT
   }
 
   type Query {
@@ -37,13 +35,9 @@ export const typeDefs = gql`
       description: String!
       posterLink: String!
       brochureLink: String
-      dateTime: String
-      venue: String
-      ieeeFee: Int
-      nonIeeeFee: Int
       type: [EventType]
-      pocsName: [String!]
-      pocsPhone: [String!]
+      regLink: String
+      date: String!
     ): Event!
     deleteEvent(id: ID!): Event
   }

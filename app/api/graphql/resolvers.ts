@@ -19,25 +19,17 @@ export const resolvers = {
         description,
         posterLink,
         brochureLink,
-        dateTime,
-        venue,
-        ieeeFee,
-        nonIeeeFee,
         type,
-        pocsName,
-        pocsPhone,
+        regLink,
+        date,
       }: {
         name: string;
         description: string;
         posterLink: string;
         brochureLink?: string;
-        dateTime?: string;
-        venue?: string;
-        ieeeFee?: number;
-        nonIeeeFee?: number;
         type: EventType[];
-        pocsName: string[];
-        pocsPhone: string[];
+        regLink?: string;
+        date: string;
       }
     ) => {
       const newEvent = await prisma.event.create({
@@ -46,13 +38,9 @@ export const resolvers = {
           description,
           posterLink,
           brochureLink,
-          dateTime,
-          venue,
-          ieeeFee,
-          nonIeeeFee,
           type,
-          pocsName,
-          pocsPhone,
+          regLink,
+          date,
         },
       });
 

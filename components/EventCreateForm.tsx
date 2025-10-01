@@ -3,10 +3,9 @@
 import { EventType } from "@/app/generated/prisma";
 import { CREATE_EVENT } from "@/lib/operations";
 import { useMutation } from "@apollo/client";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 const EventCreateForm = () => {
@@ -17,19 +16,24 @@ const EventCreateForm = () => {
     null
   );
   const [brochureLink, setBrochureLink] = useState<string>("");
-  const [dateTime, setDateTime] = useState<string>("");
-  const [venue, setVenue] = useState<string>("");
-  const [ieeeFee, setIeeeFee] = useState<string>("");
-  const [nonIeeeFee, setNonIeeeFee] = useState<string>("");
+  const [regLink, setRegLink] = useState<string>("");
+  const [date, setDate] = useState<string>("");
   const [type, setType] = useState<EventType[]>([]);
-  const [pocsName, setPocsName] = useState<string[]>([]);
-  const [pocsPhone, setPocsPhone] = useState<string[]>([]);
 
   const router = useRouter();
   const [createLoading, setCreateLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const [createEvent] = useMutation(CREATE_EVENT);
+
+  // const eventTypes = [
+  //   "Competition",
+  //   "Workshop",
+  //   "Talk",
+  //   "Hackathon",
+  //   "Social Event",
+  //   "Orientation",
+  // ];
 
   const handleCreate = async () => {
     if (!name.trim() || !description.trim() || !posterLink.trim()) {
@@ -43,12 +47,9 @@ const EventCreateForm = () => {
             description,
             posterLink,
             brochureLink,
-            dateTime,
-            venue,
-            ieeeFee: parseInt(ieeeFee),
-            nonIeeeFee: parseInt(nonIeeeFee),
-            pocsName,
-            pocsPhone,
+            regLink,
+            date,
+            type,
           },
           onCompleted: (data) => {
             toast.success(`${data.createEvent.name} created.`);
@@ -139,61 +140,47 @@ const EventCreateForm = () => {
       <input
         className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
         type="text"
+        placeholder="Date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
+      <input
+        className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
+        type="text"
         placeholder="Brochure Link"
         value={brochureLink}
         onChange={(e) => setBrochureLink(e.target.value)}
       />
+
       <input
         className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
         type="text"
-        placeholder="Date followed by time"
-        value={dateTime}
-        onChange={(e) => setDateTime(e.target.value)}
+        placeholder="Registration Link"
+        value={regLink}
+        onChange={(e) => setRegLink(e.target.value)}
       />
-      <input
+      <select
         className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-        type="text"
-        placeholder="Venue"
-        value={venue}
-        onChange={(e) => setVenue(e.target.value)}
-      />
-      <div className="flex gap-2 w-full">
-        <input
-          className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-          type="number"
-          placeholder="IEEE Fee"
-          value={ieeeFee}
-          onChange={(e) => setIeeeFee(e.target.value)}
-        />
-        <input
-          className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-          type="text"
-          placeholder="Non IEEE Fee"
-          value={nonIeeeFee}
-          onChange={(e) => setNonIeeeFee(e.target.value)}
-        />
-      </div>
-      {/* type */}
-      <input
-        className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-        type="text"
-        placeholder="POCs Name(comma separated)"
-        value={pocsName}
-        onChange={(e) => setPocsName(e.target.value.split(","))}
-      />
-      <input
-        className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-        type="text"
-        placeholder="POCs Phone(comma separated)"
-        value={pocsPhone}
-        onChange={(e) => setPocsPhone(e.target.value.split(","))}
-      />
+        value={type[0] ?? ""}
+        onChange={(e) => setType([e.target.value as EventType])}
+      >
+        <option value="">Select Event Type</option>
+        <option value="WORKSHOP">Workshop</option>
+        <option value="SEMINAR">Seminar</option>
+        <option value="TALK">Talk</option>
+        <option value="HACKATHON">Hackathon</option>
+        <option value="COMPETITION">Competition</option>
+        <option value="PEER">Peer Learning</option>
+        <option value="SUMMIT">Summit</option>
+        <option value="SOCIAL">Social</option>
+      </select>
+
       <button
         onClick={handleCreate}
         disabled={createLoading || uploading}
-        className="bg-slate-800 text-white rounded-xl p-2 text-xl font-semibold disabled:bg-slate-500"
+        className="bg-slate-800 text-white rounded-xl p-2 text-xl font-semibold disabled:bg-slate-500 cursor-pointer"
       >
-        {uploading || createLoading ? "Uploading" : "Create"}
+        {uploading || createLoading ? "Uploading..." : "Create"}
       </button>
     </div>
   );

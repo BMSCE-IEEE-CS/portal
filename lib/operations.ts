@@ -6,39 +6,27 @@ export const CREATE_EVENT = gql`
     $description: String!
     $posterLink: String!
     $brochureLink: String
-    $dateTime: String
-    $venue: String
-    $ieeeFee: Int
-    $nonIeeeFee: Int
     $type: [EventType]
-    $pocsName: [String!]
-    $pocsPhone: [String!]
+    $regLink: String
+    $date: String!
   ) {
     createEvent(
       name: $name
       description: $description
       posterLink: $posterLink
       brochureLink: $brochureLink
-      dateTime: $dateTime
-      venue: $venue
-      ieeeFee: $ieeeFee
-      nonIeeeFee: $nonIeeeFee
       type: $type
-      pocsName: $pocsName
-      pocsPhone: $pocsPhone
+      regLink: $regLink
+      date: $date
     ) {
       id
       name
       description
       posterLink
       brochureLink
-      dateTime
-      venue
-      ieeeFee
-      nonIeeeFee
       type
-      pocsName
-      pocsPhone
+      regLink
+      date
       createdAt
     }
   }
@@ -52,13 +40,10 @@ export const GET_EVENTS = gql`
       description
       posterLink
       brochureLink
-      dateTime
-      ieeeFee
-      nonIeeeFee
-      venue
-      pocsName
-      pocsPhone
+      regLink
+      date
       createdAt
+      type
     }
   }
 `;
