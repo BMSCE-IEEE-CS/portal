@@ -1,5 +1,4 @@
 import { EventType } from "@/app/generated/prisma";
-import { storage } from "@/lib/firebase";
 import { DELETE_EVENT } from "@/lib/operations";
 import { useMutation } from "@apollo/client";
 import { deleteObject, ref } from "firebase/storage";
@@ -44,13 +43,25 @@ const EventCard = ({
   const handleDelete = async (id: string, url: string) => {
     setWait(true);
     try {
-      const pathMatch = url.match(/\/o\/(.*?)\?/);
-      const encodedPath = pathMatch?.[1];
-      if (!encodedPath) throw new Error("Invalid image url format");
-      const decodedPath = decodeURIComponent(encodedPath);
-      const imgRef = ref(storage, decodedPath);
+      const getPublicId = (url: string) => {
+        const cleanUrl = url.split("?")[0];
 
-      await deleteObject(imgRef);
+        const match = cleanUrl.match(
+          /\/upload\/(?:v\d+\/)?(.+)\.(jpg|jpeg|png|webp)$/
+        );
+        if (!match) throw new Error("Invalid cloudinary url");
+        return match[1];
+      };
+      const publicId = getPublicId(url);
+      const res = await fetch("/api/cloudinaryImage", {
+        method: "POST",
+        body: JSON.stringify({ publicId }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Deletion failed");
+
+      toast.success("Poster deleted");
 
       await deleteEvent({
         variables: { id },
@@ -60,7 +71,7 @@ const EventCard = ({
         },
       });
     } catch (err) {
-      console.error("Error deleting the event:", err);
+      console.error(err);
       toast.error("Error deleting the event");
     } finally {
       setWait(false);
