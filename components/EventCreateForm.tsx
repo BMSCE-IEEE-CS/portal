@@ -1,7 +1,6 @@
 "use client";
 
 import { EventType } from "@/app/generated/prisma";
-import { storage } from "@/lib/firebase";
 import { CREATE_EVENT } from "@/lib/operations";
 import { useMutation } from "@apollo/client";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -65,19 +64,39 @@ const EventCreateForm = () => {
     }
   };
 
-  const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setUploading(true);
       setPosterLinkPreview(URL.createObjectURL(file));
-      const storageRef = ref(storage, `posters/${Date.now()}_${name}`);
       try {
-        const snapshot = await uploadBytes(storageRef, file);
-        const downloadUrl = await getDownloadURL(snapshot.ref);
-        setPosterLink(downloadUrl);
-        toast.success("Image uploaded");
-      } catch (e) {
-        console.error("Image upload error:", e);
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append(
+          "upload_preset",
+          process.env.NEXT_PUBLIC_CLOUDINARY_PRESET!
+        );
+
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!res.ok) throw Error("Cloudinary upload failed");
+
+        const data = await res.json();
+
+        if (data.secure_url) {
+          setPosterLink(data.secure_url);
+          toast.success("Image uploaded");
+        } else {
+          throw new Error("no secure URL returned from cloudinary");
+        }
+      } catch (error) {
+        console.error("Image upload error:", error);
         toast.error("Image upload failed");
       } finally {
         setUploading(false);
@@ -103,7 +122,7 @@ const EventCreateForm = () => {
       <input
         type="file"
         accept="image/*"
-        onChange={handleImage}
+        onChange={handleImageUpload}
         className="w-full text-gray-200
              file:mr-2 file:py-2 file:px-4
              file:rounded-full file:font-semibold
