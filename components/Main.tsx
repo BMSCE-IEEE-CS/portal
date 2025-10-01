@@ -14,21 +14,6 @@ const Main = () => {
   const { data, loading, error, refetch } = useQuery(GET_EVENTS, {
     fetchPolicy: "cache-and-network",
   });
-  const [deleteEvent] = useMutation(DELETE_EVENT);
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteEvent({
-        variables: { id },
-        onCompleted: (data) => {
-          toast.success(`${data.deleteEvent.name} was deleted.`);
-          refetch();
-        },
-      });
-    } catch (e) {
-      toast.error(`${e}`);
-    }
-  };
 
   if (status === "unauthenticated") {
     return (
@@ -49,10 +34,15 @@ const Main = () => {
             Create Event
           </Link>
           <div className="mt-10 w-full">
-            {loading && <p className="mt-4">Fetching events...</p>}
-            {error && <p className="text-red-400 mt-4">{error.message}</p>}
+            {loading && <p className="mt-4 text-center">Fetching events...</p>}
+            {error && (
+              <p className="text-red-400 mt-4 text-center">{error.message}</p>
+            )}
+            {data?.events?.length === 0 && (
+              <p className="text-center">No events added</p>
+            )}
             {data?.events && (
-              <div className="grid md:grid-cols-3 gap-6 mx-auto w-full px-4">
+              <div className="flex flex-col gap-6 mx-auto w-full px-4">
                 {data.events.map((event: Event) => (
                   <EventCard
                     key={event.id}
@@ -61,13 +51,9 @@ const Main = () => {
                     description={event.description}
                     posterLink={event.posterLink}
                     brochureLink={event.brochureLink}
-                    dateTime={event?.dateTime}
-                    venue={event?.venue}
-                    ieeeFee={event?.ieeeFee}
-                    nonIeeeFee={event?.nonIeeeFee}
                     type={event?.type}
-                    pocsName={event.pocsName}
-                    pocsPhone={event.pocsPhone}
+                    date={event.date}
+                    regLink={event.regLink}
                   />
                 ))}
               </div>
