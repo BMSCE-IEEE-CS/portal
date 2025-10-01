@@ -12,6 +12,12 @@ const yoga = createYoga<{ request: Request }>({
   schema: createSchema({ typeDefs, resolvers }),
   graphiql: process.env.NODE_ENV === "development",
   graphqlEndpoint: "/api/graphql",
+  cors: {
+    origin:
+      process.env.NODE_ENV === "development"
+        ? "*"
+        : ["https://portal.bmsceieeecs.in/", "https://www.bmsceieeecs.in/"],
+  },
   fetchAPI: { Response, Request, Headers },
 });
 
