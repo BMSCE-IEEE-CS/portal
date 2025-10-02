@@ -93,7 +93,12 @@ const EventCard = ({
         </p>
 
         <p className="text-slate-300 mt-6 text-justify whitespace-pre-line">
-          📅 {date}
+          📅{" "}
+          {new Date(date.toString()).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
         </p>
 
         {brochureLink && (

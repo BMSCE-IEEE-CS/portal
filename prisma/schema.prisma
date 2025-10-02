@@ -73,7 +73,7 @@ model Event {
   brochureLink String?
   type         EventType[]
   regLink      String?
-  date         String
+  date         DateTime
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 }
