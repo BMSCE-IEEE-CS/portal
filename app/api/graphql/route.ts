@@ -15,7 +15,7 @@ const yoga = createYoga<{ request: Request }>({
   cors: {
     origin:
       process.env.NODE_ENV === "development"
-        ? "*"
+        ? ["http://localhost:3000"]
         : ["https://portal.bmsceieeecs.in/", "https://www.bmsceieeecs.in/"],
   },
   fetchAPI: { Response, Request, Headers },
