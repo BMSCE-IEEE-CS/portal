@@ -1,10 +1,8 @@
 import { EventType } from "@/app/generated/prisma";
 import { DELETE_EVENT } from "@/lib/operations";
 import { useMutation } from "@apollo/client";
-import { deleteObject, ref } from "firebase/storage";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -16,7 +14,7 @@ interface EventCardProps {
   brochureLink?: string | null;
   type?: EventType[];
   regLink?: string | null;
-  date: String;
+  date: string | number;
 }
 
 const EventCard = ({
@@ -32,7 +30,11 @@ const EventCard = ({
   const [deleteEvent] = useMutation(DELETE_EVENT);
   const [wait, setWait] = useState(false);
 
-  console.log(regLink);
+  const formattedDate = new Date(date).toLocaleDateString("en-in", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const handleDelete = async (id: string, url: string) => {
     setWait(true);
@@ -93,12 +95,8 @@ const EventCard = ({
         </p>
 
         <p className="text-slate-300 mt-6 text-justify whitespace-pre-line">
-          📅{" "}
-          {new Date(date.toString()).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
+          📅
+          {formattedDate}
         </p>
 
         {brochureLink && (
@@ -129,7 +127,7 @@ const EventCard = ({
 
         <button
           onClick={() => handleDelete(id, posterLink)}
-          className="bg-red-400 mt-6 rounded-xl px-4 py-2 text-lg text-black font-semibold self-start"
+          className="bg-red-400 mt-6 rounded-xl px-4 py-2 text-lg text-black font-semibold self-start cursor-pointer"
         >
           {wait ? "Deleting..." : "Delete"}
         </button>
