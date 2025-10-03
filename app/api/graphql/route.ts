@@ -13,11 +13,11 @@ const yoga = createYoga<{ request: Request }>({
   graphiql: process.env.NODE_ENV === "development",
   graphqlEndpoint: "/api/graphql",
   cors: {
-    origin: [
-      "https://portal.bmsceieeecs.in",
-      "https://www.bmsceieeecs.in",
-      "http://localhost:3000",
-    ],
+    origin:
+      process.env.NODE_ENV === "development"
+        ? ["http://localhost:3000"]
+        : ["https://portal.bmsceieeecs.in", "https://www.bmsceieeecs.in"],
+    methods: ["GET", "POST", "OPTIONS"],
   },
   fetchAPI: { Response, Request, Headers },
 });
@@ -27,5 +27,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  return yoga.fetch(request);
+}
+
+export async function OPTIONS(request: Request) {
   return yoga.fetch(request);
 }
