@@ -43,7 +43,7 @@ const Main = () => {
             )}
             {data?.events && (
               <div className="flex flex-col gap-6 mx-auto w-full px-4">
-                {data.events.map((event: Event) => (
+                {data.events.map((event: any) => (
                   <EventCard
                     key={event.id}
                     id={event.id}

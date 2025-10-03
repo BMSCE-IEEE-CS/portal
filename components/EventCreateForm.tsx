@@ -26,21 +26,13 @@ const EventCreateForm = () => {
 
   const [createEvent] = useMutation(CREATE_EVENT);
 
-  // const eventTypes = [
-  //   "Competition",
-  //   "Workshop",
-  //   "Talk",
-  //   "Hackathon",
-  //   "Social Event",
-  //   "Orientation",
-  // ];
-
   const handleCreate = async () => {
     if (!name.trim() || !description.trim() || !posterLink.trim()) {
       alert("Please enter event name, description and poster link");
     } else {
       setCreateLoading(true);
       try {
+        const isoDateConvert = new Date(date).toISOString();
         await createEvent({
           variables: {
             name,
@@ -48,7 +40,7 @@ const EventCreateForm = () => {
             posterLink,
             brochureLink,
             regLink,
-            date,
+            date: isoDateConvert,
             type,
           },
           onCompleted: (data) => {
@@ -139,7 +131,7 @@ const EventCreateForm = () => {
       )}
       <input
         className="p-2 bg-slate-300 w-full rounded-lg text-lg outline-none"
-        type="text"
+        type="date"
         placeholder="Date"
         value={date}
         onChange={(e) => setDate(e.target.value)}

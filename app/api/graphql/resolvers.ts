@@ -4,7 +4,16 @@ import { prisma } from "@/lib/prisma";
 export const resolvers = {
   Query: {
     events: async () => {
-      return await prisma.event.findMany({ orderBy: { createdAt: "desc" } });
+      const events = await prisma.event.findMany({
+        orderBy: {
+          date: "desc",
+        },
+      });
+
+      return events.map((e) => ({
+        ...e,
+        date: e.date.toISOString(),
+      }));
     },
     event: async (_: any, { id }: { id: string }) => {
       return await prisma.event.findUnique({ where: { id } });
