@@ -16,7 +16,12 @@ export const resolvers = {
       }));
     },
     event: async (_: any, { id }: { id: string }) => {
-      return await prisma.event.findUnique({ where: { id } });
+      const eventData = await prisma.event.findUnique({ where: { id } });
+      if (!eventData) throw new Error("No event found");
+      return {
+        ...eventData,
+        date: eventData.date.toISOString(),
+      };
     },
   },
 
