@@ -40,5 +40,15 @@ export const typeDefs = gql`
       date: String!
     ): Event!
     deleteEvent(id: ID!): Event
+    updateEvent(
+      id: ID!
+      name: String
+      description: String
+      brochureLink: String
+      posterLink: String
+      type: [EventType]
+      regLink: String
+      date: String
+    ): Event
   }
 `;

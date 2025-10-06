@@ -1,6 +1,27 @@
 import { EventType } from "@/app/generated/prisma";
 import { prisma } from "@/lib/prisma";
 
+interface CreateEventInput {
+  name: string;
+  description: string;
+  posterLink: string;
+  brochureLink: string;
+  type?: EventType[];
+  regLink?: string;
+  date: string;
+}
+
+interface UpdateEventInput {
+  id: string;
+  name?: string;
+  description?: string;
+  posterLink?: string;
+  brochureLink?: string;
+  type?: EventType[];
+  regLink?: string;
+  date?: string;
+}
+
 export const resolvers = {
   Query: {
     events: async () => {
@@ -18,6 +39,7 @@ export const resolvers = {
     event: async (_: any, { id }: { id: string }) => {
       const eventData = await prisma.event.findUnique({ where: { id } });
       if (!eventData) throw new Error("No event found");
+
       return {
         ...eventData,
         date: eventData.date.toISOString(),
@@ -26,44 +48,46 @@ export const resolvers = {
   },
 
   Mutation: {
-    createEvent: async (
-      _: any,
-      {
-        name,
-        description,
-        posterLink,
-        brochureLink,
-        type,
-        regLink,
-        date,
-      }: {
-        name: string;
-        description: string;
-        posterLink: string;
-        brochureLink?: string;
-        type: EventType[];
-        regLink?: string;
-        date: string;
-      }
-    ) => {
+    createEvent: async (_: any, input: CreateEventInput) => {
       const newEvent = await prisma.event.create({
-        data: {
-          name,
-          description,
-          posterLink,
-          brochureLink,
-          type,
-          regLink,
-          date,
-        },
+        data: input,
       });
 
-      return newEvent;
+      return {
+        ...newEvent,
+        date: newEvent.date.toISOString(),
+      };
+    },
+
+    updateEvent: async (_: any, input: UpdateEventInput) => {
+      const { id, ...rest } = input;
+      const event = await prisma.event.findUnique({ where: { id } });
+
+      if (!event) {
+        throw new Error("No event found");
+      }
+
+      const updatedEvent = Object.fromEntries(
+        Object.entries(rest).filter(([_, value]) => value !== undefined)
+      );
+
+      const updated = await prisma.event.update({
+        where: { id },
+        data: updatedEvent,
+      });
+
+      return {
+        ...updated,
+        date: updated.date.toISOString(),
+      };
     },
 
     deleteEvent: async (_: any, { id }: { id: string }) => {
       const event = await prisma.event.delete({ where: { id } });
-      return event;
+      return {
+        ...event,
+        date: event.date.toISOString(),
+      };
     },
   },
 };
