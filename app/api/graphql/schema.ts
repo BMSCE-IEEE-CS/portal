@@ -45,6 +45,7 @@ export const typeDefs = gql`
       name: String
       description: String
       brochureLink: String
+      posterLink: String
       type: [EventType]
       regLink: String
       date: String

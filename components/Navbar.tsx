@@ -7,8 +7,8 @@ import React from "react";
 const Navbar = () => {
   const { data: session, status } = useSession();
   return (
-    <div className="px-4 py-2 w-[95%]">
-      <div className="flex items-center justify-between px-4 py-2 bg-slate-200 rounded-xl">
+    <div className="px-4 py-2 w-[95%] mx-auto sticky top-0 z-10">
+      <div className="flex items-center justify-between px-4 py-2 bg-white/80 backdrop-blur-sm rounded-xl">
         <Image
           src="/images/bmsceieeecsblack.png"
           width={100}

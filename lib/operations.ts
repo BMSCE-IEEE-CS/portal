@@ -32,6 +32,40 @@ export const CREATE_EVENT = gql`
   }
 `;
 
+export const UPDATE_EVENT = gql`
+  mutation UpdateEvent(
+    $id: ID!
+    $name: String
+    $description: String
+    $posterLink: String
+    $brochureLink: String
+    $type: [EventType]
+    $regLink: String
+    $date: String
+  ) {
+    updateEvent(
+      id: $id
+      name: $name
+      description: $description
+      posterLink: $posterLink
+      brochureLink: $brochureLink
+      type: $type
+      regLink: $regLink
+      date: $date
+    ) {
+      id
+      name
+      description
+      posterLink
+      brochureLink
+      type
+      regLink
+      date
+      createdAt
+    }
+  }
+`;
+
 export const GET_EVENTS = gql`
   query GetEvents {
     events {
@@ -43,6 +77,21 @@ export const GET_EVENTS = gql`
       regLink
       date
       createdAt
+      type
+    }
+  }
+`;
+
+export const GET_EVENT_BY_ID = gql`
+  query GetEventById($id: ID!) {
+    event(id: $id) {
+      id
+      name
+      description
+      posterLink
+      brochureLink
+      regLink
+      date
       type
     }
   }

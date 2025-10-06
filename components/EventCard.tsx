@@ -125,12 +125,20 @@ const EventCard = ({
           </div>
         ))}
 
-        <button
-          onClick={() => handleDelete(id, posterLink)}
-          className="bg-red-400 mt-6 rounded-xl px-4 py-2 text-lg text-black font-semibold self-start cursor-pointer"
-        >
-          {wait ? "Deleting..." : "Delete"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handleDelete(id, posterLink)}
+            className="bg-red-400 mt-6 w-full rounded-xl px-4 py-2 text-lg text-black font-semibold self-start cursor-pointer"
+          >
+            {wait ? "Deleting..." : "Delete"}
+          </button>
+          <Link
+            href={`/update/${id}`}
+            className="bg-yellow-400 w-full mt-6 rounded-xl px-4 py-2 text-lg text-black font-semibold text-center"
+          >
+            Update
+          </Link>
+        </div>
       </div>
     </div>
   );
