@@ -168,6 +168,7 @@ const EventUpdateForm = ({ initialData }: EventUpdateFormProps) => {
         <option value="PEER">Peer Learning</option>
         <option value="SUMMIT">Summit</option>
         <option value="SOCIAL">Social</option>
+        <option value="CONFERENCE">Conference</option>
       </select>
 
       <button
