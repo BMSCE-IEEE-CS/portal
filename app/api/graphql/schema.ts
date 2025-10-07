@@ -22,6 +22,7 @@ export const typeDefs = gql`
     PEER
     SEMINAR
     SUMMIT
+    CONFERENCE
   }
 
   type Query {

@@ -94,4 +94,5 @@ enum EventType {
   PEER
   SEMINAR
   SUMMIT
+  CONFERENCE
 }
