@@ -21,6 +21,7 @@ export const typeDefs = gql`
     SOCIAL
     PEER
     SEMINAR
+    IDEATHON
     SUMMIT
     CONFERENCE
   }
